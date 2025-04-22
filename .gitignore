@@ -36,4 +36,4 @@ yarn-error.*
 *.tsbuildinfo
 node_modules/
 .env
-*.json
+*.jsonzodyfocus-2052bcc199a2.json
