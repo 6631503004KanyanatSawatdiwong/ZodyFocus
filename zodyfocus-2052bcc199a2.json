@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "zodyfocus",
+  "private_key_id": "2052bcc199a27677ff5043fe01db331d3ed9941c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCv5PcktBPySLDK\npyI6mhvEnA2vEXe5bJEbeYrwfZO4Z0aHBkrHfptJC6N7YosTVxrsJRXq+qRdrBG1\nKMU0Rf2Ja2wJF8szCuyE2jsOtjN17FbviErpHb0ynKUCIwZjjb68U33tuFAU23lz\n1TwJWAsKriG+/1xyEYzsv8M5Ub82ctkkhFDuvb+QXCVDah11Go95D+ol5+PV027M\nLjA8+VEboRwzJ9gDZM0SpfX10fESJ/Yzl/csAhi14HFtc9e0IFmgC0g/iYQdbbBG\njVAQg4CA2Uyr+A1BNB2qL27msmzwK108baZI0NUMfTlsif81mYajzgcuZKVseXCa\nTvyK/gNDAgMBAAECggEABM0uRe04giujz9RiJdFhIqvT38yNRR2GlIZr2YbECouf\nLD5quillmcfcjZiyDTQagwm8IG75H6l7zkMvpu6mLiMljtX8cQdCT5oZdJxaqURr\nVxyUVuq96GzIQFeua/dJlqB81olqfjdDiHrwqZyiqIb6Wtljr6V1AF13uc/WdWj/\ndbqjVYS3jsNjjwhjRIJNERIUF9t/qBZq9cQZLAioksL0o9/4x/CD3sUADh55i79I\n+1FsfGWKNVHHT0suL8A9pmevnB1rkanKSvfmmyTUp5Tyb5eXCUkeRGLTBgkuFPmf\nIDco6UO/yRjzIYNPzX05fyY5/AFW++pTTcCCkC97QQKBgQD3WDmaoENEROR0V/hg\nuNC00Y6xndaRolLsdZNJcWl1ewtgUttD1d0vNAWyXBcsObtSbMganb1Ht14O1JBc\nZWyvSd0TUIPYucRJBzwTdfaLXdTiNLci62mcMpx7f3832eD1HpCD/C9PGJRD8fbp\n4RIAT85BqIAz7s5A3C84QlnIIQKBgQC2DKvdosFNuKhw5SfbOtkC9FOxUHYhduPP\nujEpdZXH9oKlAURUFU3VNRMyIColZ2b0ZZddzDnavrCoj6kHjVEoT/qwmQRIpAD8\nGjpCUjlq/Uv2MbRylLtCJWxmL8rffjil9S73mIVTdip26kUM6n2nL9XTOiXXDZRn\nHCpPj3fO4wKBgQCCKXNm45+CdZ6jewfCHn/2J7En1x/rU7i/pr/zjjMpF69M6U1p\nzUmwZXf5/GxVYawqHATRvOC2tNBSjZnKhbVEKWKln2FC079vjtcWhqVPgfldcNBP\nGANjp16hvt57zbSMSaFTU4qx3QVpHBQLz91hPJ4V/044BhuUFkrjGEeXAQKBgCRC\nP9Tj/rY5KitaKOcMQH7LJQQy72RY5qTQA8yrI8rw+TJeHzrUB22IpasdJufOQX45\n4b0H2RoNUugvvM3JQrnRvC+COo0xRRTxMFtXPyJlEsUVP0h3ARj6lS2BJVoALM45\nGEKuORfXeDu5C0m4RpCPAXqRoUnE5aLnxDGWdJlbAoGAR1kTtszQerVWHF0D89cV\n5iGPCvW/wk8ludzTbxITnVrySEyT8InidyM+uBZj6guHN9pr6bZ03E3xb+6+Au1/\n+B4A80hsW+UHddLT/GvPdj7TeAdeO7HvRTFjzGsimPgbIsMm52Y0xm/ulzXIPfdz\nRem+zX5wYGyw7st+v3HmXsI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "zody-focus@zodyfocus.iam.gserviceaccount.com",
+  "client_id": "103729681554411460373",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/zody-focus%40zodyfocus.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
