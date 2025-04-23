@@ -4,11 +4,11 @@
     "slug": "ZodyFocus",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/AstroFocus-Logo.png",
+    "icon": "./assets/ZodyFocus-Logo.jpeg",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/AstroFocus-Logo.png",
+      "image": "./assets/ZodyFocus-Logo.jpeg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,12 +17,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/AstroFocus-Logo.png",
+        "foregroundImage": "./assets/ZodyFocus-Logo.jpeg",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/AstroFocus-Logo.png"
+      "favicon": "./assets/ZodyFocus-Logo.jpeg"
     }
   }
 }
