@@ -10,10 +10,23 @@ const characters = [
     { id: '2', image: require('../assets/Character/girlAstronaut.png') },
 ];
 
-export default function HomeScreen({ navigation }) {
+const HomeScreen = ({ navigation }) => {
     const [userData, setUserData] = useState(null);
     const floatAnim = useRef(new Animated.Value(0)).current;
     const starRotationAnim = useRef(new Animated.Value(0)).current;
+
+    // Function to determine which planet to show based on planetBadges
+    const getPlanetImage = (planetBadges) => {
+        if (planetBadges.shimmerAdventurer) {
+            return require('../assets/planets/fourth-planet.png');
+        } else if (planetBadges.rosellePioneer) {
+            return require('../assets/planets/third-planet.png');
+        } else if (planetBadges.lrisnovaVoyage) {
+            return require('../assets/planets/second-planet.png');
+        } else {
+            return require('../assets/planets/start-planet.png');
+        }
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -94,10 +107,13 @@ export default function HomeScreen({ navigation }) {
                     style={styles.bigStarContainer} 
                     onPress={() => navigation.navigate('ToFocusScreen')}
                 >
-                        <Image source={require('../assets/images/focus-button.png')} style={styles.bigStar} />
+                    <Image source={require('../assets/images/focus-button.png')} style={styles.bigStar} />
                 </TouchableOpacity>
 
-                <Image source={require('../assets/planets/moon.png')} style={styles.moonImage} />
+                <Image 
+                    source={getPlanetImage(userData.planetBadges || {})} 
+                    style={styles.moonImage} 
+                />
                 <Animated.View style={{ transform: [{ translateY: floatAnim }] }}>
                     <Image source={characterImage} style={styles.characterImage} />
                 </Animated.View>
@@ -122,8 +138,8 @@ const styles = StyleSheet.create({
         width: width * 0.7, 
         height: height * 0.7,
         resizeMode: 'contain',
-        right: 60,
-        top: 100,
+        right: '15%',
+        top: '20%',
         transform: [{ rotate: '10deg' }],
         zIndex: 1,
     },
@@ -205,4 +221,6 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
     },
          
-}); 
+});
+
+export default HomeScreen; 

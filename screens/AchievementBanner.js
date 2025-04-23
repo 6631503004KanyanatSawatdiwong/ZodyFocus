@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
-import { database, ref, onValue } from '../firebaseConfig';
+import { database, ref, onValue, update } from '../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window'); // Get screen dimensions
@@ -8,13 +8,11 @@ const { width, height } = Dimensions.get('window'); // Get screen dimensions
 const AchievementBanner = () => {
     const [userStreaks, setUserStreaks] = useState({
         currentStreak: 0,
-        streaks: {
-            twoDays: false,
-            threeDays: false,
-            fiveDays: false,
-            tenDays: false,
-            thirtyDays: false
-        }
+        twoDays: false,
+        threeDays: false,
+        fiveDays: false,
+        tenDays: false,
+        thirtyDays: false
     });
 
     const [userData, setUserData] = useState({
@@ -41,16 +39,14 @@ const AchievementBanner = () => {
                 onValue(userRef, (snapshot) => {
                     const data = snapshot.val();
                     if (data) {
-                        // Update streaks data
-                        setUserStreaks({
-                            currentStreak: data.streaks?.currentStreak || 0,
-                            streaks: data.streaks?.streaks || {
-                                twoDays: false,
-                                threeDays: false,
-                                fiveDays: false,
-                                tenDays: false,
-                                thirtyDays: false
-                            }
+                        // Update streaks data with flattened structure
+                        setUserStreaks(data.streaks || {
+                            currentStreak: 0,
+                            twoDays: false,
+                            threeDays: false,
+                            fiveDays: false,
+                            tenDays: false,
+                            thirtyDays: false
                         });
 
                         // Update user data
@@ -67,43 +63,6 @@ const AchievementBanner = () => {
 
         fetchUserData();
     }, []);
-
-    // Calculate planet badges based on user data
-    useEffect(() => {
-        const calculatePlanetBadges = () => {
-            const newPlanetBadges = {
-                starletExplorer: true, // Always unlocked
-                lrisnovaVoyage: userData.currentStar >= 6,
-                rosellePioneer: userData.currentStar >= 12,
-                shimmerAdventurer: userData.currentStar >= 17,
-                weekendWarrior: false,
-                dreamWalker: false
-            };
-
-            // Check for weekend sessions
-            const hasWeekendSession = userData.focusSessions.some(session => {
-                const sessionDate = new Date(session.createdAt);
-                const day = sessionDate.getDay();
-                // 0 is Sunday, 6 is Saturday
-                return day === 0 || day === 6;
-            });
-            newPlanetBadges.weekendWarrior = hasWeekendSession;
-
-            // Check if all planets are reached (except dreamWalker)
-            const allPlanetsReached = 
-                newPlanetBadges.starletExplorer && 
-                newPlanetBadges.lrisnovaVoyage && 
-                newPlanetBadges.rosellePioneer && 
-                newPlanetBadges.shimmerAdventurer && 
-                newPlanetBadges.weekendWarrior;
-            
-            newPlanetBadges.dreamWalker = allPlanetsReached;
-
-            setPlanetBadges(newPlanetBadges);
-        };
-
-        calculatePlanetBadges();
-    }, [userData]);
 
     // Streak badge images
     const streakBadges = {
@@ -208,10 +167,8 @@ const AchievementBanner = () => {
                         </View>
                     </View>
                     
-                    
                     <View style={styles.badgeContainer}>
                         <View style={styles.badgeRow}>
-
                             {/* Current Streak Display */}
                             <View style={styles.badgeItem}>
                                 <View style={styles.currentStreakContainer}>
@@ -227,7 +184,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.twoDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.streaks.twoDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: userStreaks.twoDays ? 1 : 0.3 }]} 
                                 />
                                 <Text style={styles.badgeText}>2 Days</Text>
                             </View>
@@ -236,7 +193,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.threeDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.streaks.threeDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: userStreaks.threeDays ? 1 : 0.3 }]} 
                                 />
                                 <Text style={styles.badgeText}>3 Days</Text>
                             </View>
@@ -247,7 +204,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.fiveDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.streaks.fiveDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: userStreaks.fiveDays ? 1 : 0.3 }]} 
                                 />
                                 <Text style={styles.badgeText}>5 Days</Text>
                             </View>
@@ -256,7 +213,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.tenDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.streaks.tenDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: userStreaks.tenDays ? 1 : 0.3 }]} 
                                 />
                                 <Text style={styles.badgeText}>10 Days</Text>
                             </View>
@@ -265,7 +222,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.thirtyDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.streaks.thirtyDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: userStreaks.thirtyDays ? 1 : 0.3 }]} 
                                 />
                                 <Text style={styles.badgeText}>30 Days</Text>
                             </View>

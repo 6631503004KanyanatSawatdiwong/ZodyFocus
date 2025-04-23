@@ -84,7 +84,7 @@ export default function ToFocusScreen({ route, navigation }) {
                         // First show the modal
                         setShowUnlockModal(true);
                         
-                        // Then update lastUnlockStar and unlocked aliens after a short delay
+                        // Then update lastUnlockStar, unlocked aliens, and planetBadges
                         setTimeout(() => {
                             const updateData = {
                                 lastUnlockStar: userData.currentStar
@@ -96,15 +96,32 @@ export default function ToFocusScreen({ route, navigation }) {
                                     ...(userData.unlockedAliens || {}),
                                     orangeAlien: true
                                 };
+                                updateData.planetBadges = {
+                                    ...(userData.planetBadges || {}),
+                                    lrisnovaVoyage: true
+                                };
                             } else if (userData.currentStar === 12) {
                                 updateData.unlockedAliens = {
                                     ...(userData.unlockedAliens || {}),
                                     pinkAlien: true
                                 };
+                                updateData.planetBadges = {
+                                    ...(userData.planetBadges || {}),
+                                    rosellePioneer: true
+                                };
                             } else if (userData.currentStar === 17) {
                                 updateData.unlockedAliens = {
                                     ...(userData.unlockedAliens || {}),
                                     purpleAlien: true
+                                };
+                                updateData.planetBadges = {
+                                    ...(userData.planetBadges || {}),
+                                    starletExplorer: true,
+                                    lrisnovaVoyage: true,
+                                    rosellePioneer: true,
+                                    shimmerAdventurer: true,
+                                    weekendWarrior: userData.planetBadges?.weekendWarrior || false,
+                                    dreamWalker: true
                                 };
                             }
 
@@ -374,16 +391,18 @@ const styles = StyleSheet.create({
         paddingVertical: 50,
     },
     moonImageLeft: {
-        width: width * 0.8,
-        height: width * 0.8,
+        width: width * 0.75,
+        height: width * 0.75,
         resizeMode: 'contain',
-        left: '-40%'
+        left: '-40%',
+        marginVertical: 10
     },
     moonImageRight: {
-        width: width * 0.8,
-        height: width * 0.8,
+        width: width * 0.75,
+        height: width * 0.75,
         resizeMode: 'contain',
-        right: '-40%'
+        right: '-40%',
+        marginVertical: 10
     },
     starRow: {
         position: 'absolute',

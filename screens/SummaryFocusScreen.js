@@ -49,19 +49,15 @@ export default function SummaryFocusScreen({ route, navigation }) {
   };
 
   // Calculate streaks based on focus sessions
-  const calculateStreaks = async (focusSessions) => {
+  const calculateStreaks = (focusSessions) => {
     if (!focusSessions || focusSessions.length === 0) {
       return {
-        streaks: {
-          currentStreak: 0,
-          streaks: {
-            twoDays: false,
-            threeDays: false,
-            fiveDays: false,
-            tenDays: false,
-            thirtyDays: false
-          }
-        }
+        currentStreak: 0,
+        twoDays: false,
+        threeDays: false,
+        fiveDays: false,
+        tenDays: false,
+        thirtyDays: false
       };
     }
 
@@ -83,16 +79,12 @@ export default function SummaryFocusScreen({ route, navigation }) {
     // If the last session was more than 1 day ago, streak is broken
     if (daysSinceLastSession > 1) {
       return {
-        streaks: {
-          currentStreak: 0,
-          streaks: {
-            twoDays: false,
-            threeDays: false,
-            fiveDays: false,
-            tenDays: false,
-            thirtyDays: false
-          }
-        }
+        currentStreak: 0,
+        twoDays: false,
+        threeDays: false,
+        fiveDays: false,
+        tenDays: false,
+        thirtyDays: false
       };
     }
 
@@ -117,47 +109,21 @@ export default function SummaryFocusScreen({ route, navigation }) {
       }
     }
 
-    // Get existing streaks from user data
+    // Update streak achievements based on current streak
+    const streakData = {
+      currentStreak,
+      twoDays: currentStreak >= 2,
+      threeDays: currentStreak >= 3,
+      fiveDays: currentStreak >= 5,
+      tenDays: currentStreak >= 10,
+      thirtyDays: currentStreak >= 30
+    };
+
+    // Update the user's streaks in the database
     const userRef = ref(database, `users/${userId}`);
-    const snapshot = await get(userRef);
-    const userData = snapshot.val() || {};
-    const existingStreaks = userData.streaks || {
-      twoDays: false,
-      threeDays: false,
-      fiveDays: false,
-      tenDays: false,
-      thirtyDays: false
-    };
+    update(userRef, { streaks: streakData });
 
-    // Update streaks based on current streak
-    const updatedStreaks = { ...existingStreaks };
-    
-    if (currentStreak >= 2 && !existingStreaks.twoDays) {
-      updatedStreaks.twoDays = true;
-    }
-    
-    if (currentStreak >= 3 && !existingStreaks.threeDays) {
-      updatedStreaks.threeDays = true;
-    }
-    
-    if (currentStreak >= 5 && !existingStreaks.fiveDays) {
-      updatedStreaks.fiveDays = true;
-    }
-    
-    if (currentStreak >= 10 && !existingStreaks.tenDays) {
-      updatedStreaks.tenDays = true;
-    }
-    
-    if (currentStreak >= 30 && !existingStreaks.thirtyDays) {
-      updatedStreaks.thirtyDays = true;
-    }
-
-    return {
-      streaks: {
-        currentStreak,
-        streaks: updatedStreaks
-      }
-    };
+    return streakData;
   };
 
   const handleContinueButton = async () => {
@@ -188,14 +154,14 @@ export default function SummaryFocusScreen({ route, navigation }) {
       const currentStar = isFullSession ? ((userData.currentStar || 0) + 1) : (userData.currentStar || 0);
 
       // Calculate streaks
-      const { streaks } = await calculateStreaks(focusSessions);
+      const streakData = calculateStreaks(focusSessions);
 
       // Update user data with focusSessions, currentStar, and streaks
       const updateData = {
         ...userData,
         focusSessions,
         currentStar,
-        streaks  // This now contains the nested structure { currentStreak, streaks }
+        streaks: streakData
       };
 
       await set(userRef, updateData);
