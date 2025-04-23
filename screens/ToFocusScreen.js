@@ -34,19 +34,19 @@ export default function ToFocusScreen({ route, navigation }) {
 
     // ⭐ Star Positions (Unchanged)
     const allStars = [
-        { top: 1050, left: 5 }, // 🔴 First Star (Starts Gold)
-        { top: 985, left: 15 },
+        { top: 1050, left: -15 }, // 🔴 First Star (Starts Gold)
+        { top: 990, left: 10 },
         { top: 930, left: -20 },
         { top: 880, left: -75 },
         { top: 815, left: -80 },
-        { top: 760, left: -50 },
+        { top: 760, left: -40 },
         // second row
-        { top: 650, left: 20 },
-        { top: 590, left: 50 },
-        { top: 550, left: 100 },
-        { top: 490, left: 110 },
-        { top: 430, left: 70 },
-        { top: 420, left: 0 },
+        { top: 640, left: 20 },
+        { top: 575, left: 50 },
+        { top: 520, left: 100 },
+        { top: 450, left: 110 },
+        { top: 390, left: 55 },
+        { top: 400, left: -20 },
         // third row
         { top: 290, right: 110 },
         { top: 235, right: 110 },
@@ -79,7 +79,8 @@ export default function ToFocusScreen({ route, navigation }) {
 
                     // Show unlock modal only when first reaching milestone stars
                     if ((userData.currentStar === 6 && userData.lastUnlockStar < 6) || 
-                        (userData.currentStar === 12 && userData.lastUnlockStar < 12)) {
+                        (userData.currentStar === 12 && userData.lastUnlockStar < 12) ||
+                        (userData.currentStar === 17 && userData.lastUnlockStar < 17)) {
                         // First show the modal
                         setShowUnlockModal(true);
                         
@@ -99,6 +100,11 @@ export default function ToFocusScreen({ route, navigation }) {
                                 updateData.unlockedAliens = {
                                     ...(userData.unlockedAliens || {}),
                                     pinkAlien: true
+                                };
+                            } else if (userData.currentStar === 17) {
+                                updateData.unlockedAliens = {
+                                    ...(userData.unlockedAliens || {}),
+                                    purpleAlien: true
                                 };
                             }
 
@@ -256,11 +262,20 @@ export default function ToFocusScreen({ route, navigation }) {
                             )}
                         </View>
 
-                        <Image source={require('../assets/planets/pink-planet.png')} style={styles.moonImageRight} />            
+                        <Image 
+                            source={currentStar >= 17 ? require('../assets/planets/fourth-planet.png') : require('../assets/planets/grey-fourth-planet copy.png')} 
+                            style={styles.moonImageRight} 
+                        />            
 
-                        <Image source={require('../assets/planets/orange-planet.png')} style={styles.moonImageLeft} />
+                        <Image 
+                            source={currentStar >= 12 ? require('../assets/planets/third-planet.png') : require('../assets/planets/grey-third-planet copy.png')} 
+                            style={styles.moonImageLeft} 
+                        />
 
-                        <Image source={require('../assets/planets/blue-planet.png')} style={styles.moonImageRight} />
+                        <Image 
+                            source={currentStar >= 6 ? require('../assets/planets/second-planet.png') : require('../assets/planets/grey-second-planet copy.png')} 
+                            style={styles.moonImageRight} 
+                        />
 
                         {/* ⭐ Star Row 3 */}
                         <View style={{ position: 'absolute', top: 0 }}>
@@ -278,7 +293,7 @@ export default function ToFocusScreen({ route, navigation }) {
                             ))}
                         </View>
 
-                        <Image source={require('../assets/planets/moon2.png')} style={styles.moonImageLeft} />
+                        <Image source={require('../assets/planets/start-planet.png')} style={styles.moonImageLeft} />
                     </ScrollView>
 
                     {isBannerVisible && (
@@ -359,16 +374,16 @@ const styles = StyleSheet.create({
         paddingVertical: 50,
     },
     moonImageLeft: {
-        width: 300,
-        height: 300,
+        width: width * 0.8,
+        height: width * 0.8,
         resizeMode: 'contain',
-        left: -150
+        left: '-40%'
     },
     moonImageRight: {
-        width: 300,
-        height: 300,
+        width: width * 0.8,
+        height: width * 0.8,
         resizeMode: 'contain',
-        right: -150
+        right: '-40%'
     },
     starRow: {
         position: 'absolute',
@@ -479,7 +494,7 @@ const styles = StyleSheet.create({
     }, 
     backButtonWrapper: {
         position: 'absolute', // Keep it fixed
-        top: 50,  // Adjust based on your design
+        top: 60,  // Adjust based on your design
         left: 20,  // Position on the left side
         zIndex: 10, // Ensure it's above other elements
         backgroundColor: 'white', // Optional: Add a translucent background

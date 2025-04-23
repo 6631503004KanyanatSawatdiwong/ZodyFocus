@@ -41,13 +41,13 @@ export default function CharacterScreen({ navigation }) {
                 createdAt: new Date().toISOString(),
                 currentStar: 0,
                 email: currentUser.email,
-                lastUnlockedStar: 0,
+                lastUnlockStar: 0,
                 name: userName.trim(),
                 planetBadges: {
-                    heartExplorer: true,
-                    felineVoyage: false,
-                    goldenPioneer: false,
-                    bubblegumConqueror: false,
+                    starletExplorer: true, // Always unlocked
+                    lrisnovaVoyage: false,
+                    rosellePioneer: false,
+                    shimmerAdventurer: false,
                     weekendWarrior: false,
                     dreamWalker: false
                 },
@@ -61,7 +61,6 @@ export default function CharacterScreen({ navigation }) {
                         thirtyDays: false
                     }
                 },
-                unlockedAlien: false,
                 updatedAt: new Date().toISOString()
             });
 
@@ -221,8 +220,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     characterImage: {
-        width: 350,
-        height: 350,
+        width: width * 0.8,
+        height: width * 0.8,
         resizeMode: 'contain'
     },
     inputContainer: {

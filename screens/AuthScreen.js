@@ -211,7 +211,7 @@ const AuthScreen = ({ navigation }) => {
               <Text style={styles.termsTitle}>Terms of Service and Privacy Policy</Text>
               <Text style={styles.termsBody}>
               <Text style={styles.termsTopic}>1. Introduction</Text>
-                {"\n"}AstroFocus is a space-themed focus timer app designed to help users stay productive by accumulating focus hours and unlocking new planets and companions. We are committed to respecting your privacy and ensuring transparency in how we handle your data.
+                {"\n"}Zody Focus is a space-themed focus timer app designed to help users stay productive by accumulating focus hours and unlocking new planets and companions. We are committed to respecting your privacy and ensuring transparency in how we handle your data.
                 {"\n\n"}
                 <Text style={styles.termsTopic}>2. Data Collection</Text>
                 {"\n"}Users must sign in using their email address and set their own username and password. We collect and store your login credentials and focus statistics, such as accumulated focus time and progress (e.g., unlocked planets or achievements).
@@ -223,7 +223,7 @@ const AuthScreen = ({ navigation }) => {
                 {"\n"}All user data is securely stored using Firebase. If you wish to delete your data, please contact our team directly.
                 {"\n\n"}
                 <Text style={styles.termsTopic}>5. Third-Party Services</Text>
-                {"\n"}AstroFocus does not use any third-party services that collect user data.
+                {"\n"}Zody Focus does not use any third-party services that collect user data.
                 {"\n\n"}
                 <Text style={styles.termsTopic}>6. Core Features</Text>
                 {"\n"}Users can start and customize their own focus timer sessions. A statistics page allows users to view their data by year, month, or day. Access to the app is restricted to logged-in users only.
@@ -232,7 +232,7 @@ const AuthScreen = ({ navigation }) => {
                 {"\n"}Users unlock smaller planets and eventually larger ones based on accumulated focus time. Unlocking a large planet also grants users a floating space companion to accompany them during focus sessions. Additionally, users can collect achievements and customize their personal character within the app.
                 {"\n\n"}
                 <Text style={styles.termsTopic}>8. Notifications</Text>
-                {"\n"}AstroFocus does not currently use any notification system.
+                {"\n"}Zody Focus does not currently use any notification system.
               </Text>
             </ScrollView>
           </View>

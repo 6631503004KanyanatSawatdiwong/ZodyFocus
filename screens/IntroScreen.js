@@ -93,7 +93,7 @@ export default function IntroScreen({ navigation }) {
                     <View style={styles.titleContainer}>
                         <Image source={require('../assets/images/logo.png')} style={styles.logoImage} />
                         <View style={styles.textContainer}>
-                            <Text style={styles.title}>Astro</Text>
+                            <Text style={styles.title}>Zody</Text>
                             <Text style={styles.title}>Focus</Text>
                         </View>
                     </View>

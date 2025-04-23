@@ -358,6 +358,21 @@ export default function OnFocusScreen({ route, navigation }) {
     };
   };
 
+  const getPurpleAlienPosition = () => {
+    return {
+      transform: [
+        {
+          translateY: alienAnimations[2].interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -20],
+          }),
+        },
+      ],
+      left: width * 0.05, // Position to the left of astronaut
+      top: height * 0.65,
+    };
+  };
+
   const handleMusicPress = () => {
     setMusicModalVisible(true);
   };
@@ -427,7 +442,9 @@ export default function OnFocusScreen({ route, navigation }) {
                   styles.alienContainer,
                   alien === 'orangeAlien' && styles.orangeAlienContainer,
                   alien === 'orangeAlien' && getOrangeAlienPosition(),
-                  alien === 'pinkAlien' && getPinkAlienPosition(),
+                  alien === 'pinkAlien' && getPinkAlienPosition(), 
+                  alien === 'purpleAlien' && styles.purpleAlienContainer,
+                  alien === 'purpleAlien' && getPurpleAlienPosition(),
                 ]}
               >
                 <Image
@@ -435,6 +452,7 @@ export default function OnFocusScreen({ route, navigation }) {
                   style={[
                     styles.alienImage,
                     alien === 'orangeAlien' && styles.orangeAlienImage,
+                    alien === 'purpleAlien' && styles.purpleAlienImage,
                   ]}
                 />
               </Animated.View>
@@ -553,6 +571,15 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orangeAlienImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  purpleAlienContainer: {
+    width: width * 0.45,
+    height: width * 0.45,
+  },
+  purpleAlienImage: {
     width: '100%',
     height: '100%',
     resizeMode: 'contain',

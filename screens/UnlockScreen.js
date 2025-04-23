@@ -51,12 +51,13 @@ const UnlockScreen = ({ visible, onClose, currentStar, lastUnlockStar, alienName
 
   // Determine which alien to show based on current star count
   const getAlienImage = () => {
-    if (currentStar === 6 || currentStar === 12) {
-      if (currentStar > lastUnlockStar) {
-        return null; // Not yet marked as unlocked — don't show it
-      }
+    if (currentStar === 6 || currentStar === 12 || currentStar === 17) {
+      // if (currentStar > lastUnlockStar) {
+      //   return null; // Not yet marked as unlocked — don't show it
+      // }
       if (currentStar === 6) return require('../assets/AlienCompanion/orangeAlien.png');
       if (currentStar === 12) return require('../assets/AlienCompanion/pinkAlien.png');
+      if (currentStar === 17) return require('../assets/AlienCompanion/purpleAlien.png');
     }
     return null;
   };

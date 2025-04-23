@@ -23,10 +23,10 @@ const AchievementBanner = () => {
     });
 
     const [planetBadges, setPlanetBadges] = useState({
-        heartExplorer: true, // Always unlocked
-        felineVoyage: false,
-        goldenPioneer: false,
-        bubblegumConqueror: false,
+        starletExplorer: true, // Always unlocked
+        lrisnovaVoyage: false,
+        rosellePioneer: false,
+        shimmerAdventurer: false,
         weekendWarrior: false,
         dreamWalker: false
     });
@@ -43,8 +43,8 @@ const AchievementBanner = () => {
                     if (data) {
                         // Update streaks data
                         setUserStreaks({
-                            currentStreak: data.currentStreak || 0,
-                            streaks: data.streaks || {
+                            currentStreak: data.streaks?.currentStreak || 0,
+                            streaks: data.streaks?.streaks || {
                                 twoDays: false,
                                 threeDays: false,
                                 fiveDays: false,
@@ -72,10 +72,10 @@ const AchievementBanner = () => {
     useEffect(() => {
         const calculatePlanetBadges = () => {
             const newPlanetBadges = {
-                heartExplorer: true, // Always unlocked
-                felineVoyage: userData.currentStar >= 6,
-                goldenPioneer: userData.currentStar >= 12,
-                bubblegumConqueror: userData.currentStar >= 17,
+                starletExplorer: true, // Always unlocked
+                lrisnovaVoyage: userData.currentStar >= 6,
+                rosellePioneer: userData.currentStar >= 12,
+                shimmerAdventurer: userData.currentStar >= 17,
                 weekendWarrior: false,
                 dreamWalker: false
             };
@@ -91,10 +91,10 @@ const AchievementBanner = () => {
 
             // Check if all planets are reached (except dreamWalker)
             const allPlanetsReached = 
-                newPlanetBadges.heartExplorer && 
-                newPlanetBadges.felineVoyage && 
-                newPlanetBadges.goldenPioneer && 
-                newPlanetBadges.bubblegumConqueror && 
+                newPlanetBadges.starletExplorer && 
+                newPlanetBadges.lrisnovaVoyage && 
+                newPlanetBadges.rosellePioneer && 
+                newPlanetBadges.shimmerAdventurer && 
                 newPlanetBadges.weekendWarrior;
             
             newPlanetBadges.dreamWalker = allPlanetsReached;
@@ -116,10 +116,10 @@ const AchievementBanner = () => {
 
     // Planet badge images
     const planetBadgeImages = {
-        heartExplorer: require('../assets/planetBadges/Heart_Explorer.png'),
-        felineVoyage: require('../assets/planetBadges/Feline_Voyage.png'),
-        goldenPioneer: require('../assets/planetBadges/Golden_Pioneer.png'),
-        bubblegumConqueror: require('../assets/planetBadges/Bubblegum_Conqueror.png'),
+        starletExplorer: require('../assets/planetBadges/Starlet_Explorer.png'),
+        lrisnovaVoyage: require('../assets/planetBadges/Lrisnova_Voyage.png'),
+        rosellePioneer: require('../assets/planetBadges/Roselle_Pioneer.png'),
+        shimmerAdventurer: require('../assets/planetBadges/Shimmer_Adventurer.png'),
         weekendWarrior: require('../assets/planetBadges/Weekend_warrior.png'),
         dreamWalker: require('../assets/planetBadges/Dreamwalker.png')
     };
@@ -144,28 +144,28 @@ const AchievementBanner = () => {
                             {/* Heart Explorer */}
                             <View style={styles.badgeItem}>
                                 <Image 
-                                    source={planetBadgeImages.heartExplorer} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.heartExplorer ? 1 : 0.3 }]} 
+                                    source={planetBadgeImages.starletExplorer} 
+                                    style={[styles.badgeImage, { opacity: planetBadges.starletExplorer ? 1 : 0.3 }]} 
                                 />
-                                <Text style={styles.badgeText}>Heart Explorer</Text>
+                                <Text style={styles.badgeText}>Starlet Explorer</Text>
                             </View>
                             
                             {/* Feline Voyage */}
                             <View style={styles.badgeItem}>
                                 <Image 
-                                    source={planetBadgeImages.felineVoyage} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.felineVoyage ? 1 : 0.3 }]} 
+                                    source={planetBadgeImages.lrisnovaVoyage} 
+                                    style={[styles.badgeImage, { opacity: planetBadges.lrisnovaVoyage ? 1 : 0.3 }]} 
                                 />
-                                <Text style={styles.badgeText}>Feline Voyage</Text>
+                                <Text style={styles.badgeText}>Lrisnova Voyage</Text>
                             </View>
                             
                             {/* Golden Pioneer */}
                             <View style={styles.badgeItem}>
                                 <Image 
-                                    source={planetBadgeImages.goldenPioneer} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.goldenPioneer ? 1 : 0.3 }]} 
+                                    source={planetBadgeImages.rosellePioneer} 
+                                    style={[styles.badgeImage, { opacity: planetBadges.rosellePioneer ? 1 : 0.3 }]} 
                                 />
-                                <Text style={styles.badgeText}>Golden Pioneer</Text>
+                                <Text style={styles.badgeText}>Roselle Pioneer</Text>
                             </View>
                         </View>
                         
@@ -173,10 +173,10 @@ const AchievementBanner = () => {
                             {/* Bubblegum Conqueror */}
                             <View style={styles.badgeItem}>
                                 <Image 
-                                    source={planetBadgeImages.bubblegumConqueror} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.bubblegumConqueror ? 1 : 0.3 }]} 
+                                    source={planetBadgeImages.shimmerAdventurer} 
+                                    style={[styles.badgeImage, { opacity: planetBadges.shimmerAdventurer ? 1 : 0.3 }]} 
                                 />
-                                <Text style={styles.badgeText}>Bubblegum Conqueror</Text>
+                                <Text style={styles.badgeText}>Shimmer Adventurer</Text>
                             </View>
                             
                             {/* Weekend Warrior */}
