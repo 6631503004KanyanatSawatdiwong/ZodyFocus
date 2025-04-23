@@ -50,14 +50,10 @@ export default function SummaryFocusScreen({ route, navigation }) {
 
   // Calculate streaks based on focus sessions
   const calculateStreaks = (focusSessions) => {
+    // Base case: no sessions = no streak
     if (!focusSessions || focusSessions.length === 0) {
       return {
-        currentStreak: 0,
-        twoDays: false,
-        threeDays: false,
-        fiveDays: false,
-        tenDays: false,
-        thirtyDays: false
+        currentStreak: 0
       };
     }
 
@@ -66,65 +62,74 @@ export default function SummaryFocusScreen({ route, navigation }) {
       new Date(b.createdAt) - new Date(a.createdAt)
     );
 
-    // Get today's date (without time)
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Check if the most recent session was today or yesterday
+    // Get current time in Thailand (UTC+7)
+    const now = new Date(Date.now() + (7 * 60 * 60 * 1000));
+    const todayMidnight = new Date(now);
+    todayMidnight.setHours(0, 0, 0, 0);
+    
+    // Check if most recent session was today
     const mostRecentSession = new Date(sortedSessions[0].createdAt);
-    mostRecentSession.setHours(0, 0, 0, 0);
-    
-    const daysSinceLastSession = Math.floor((today - mostRecentSession) / (1000 * 60 * 60 * 24));
-    
-    // If the last session was more than 1 day ago, streak is broken
-    if (daysSinceLastSession > 1) {
+    if (mostRecentSession < todayMidnight) {
       return {
-        currentStreak: 0,
-        twoDays: false,
-        threeDays: false,
-        fiveDays: false,
-        tenDays: false,
-        thirtyDays: false
+        currentStreak: 0
       };
     }
 
     // Calculate current streak
     let currentStreak = 1;
-    let streakBroken = false;
+    let currentDate = new Date(mostRecentSession);
+    currentDate.setHours(0, 0, 0, 0);
     
     for (let i = 1; i < sortedSessions.length; i++) {
-      const currentSession = new Date(sortedSessions[i].createdAt);
-      currentSession.setHours(0, 0, 0, 0);
+      const sessionDate = new Date(sortedSessions[i].createdAt);
+      sessionDate.setHours(0, 0, 0, 0);
       
-      const prevSession = new Date(sortedSessions[i-1].createdAt);
-      prevSession.setHours(0, 0, 0, 0);
+      // Check if this session is from the previous day
+      const previousDate = new Date(currentDate);
+      previousDate.setDate(previousDate.getDate() - 1);
       
-      const daysBetweenSessions = Math.floor((prevSession - currentSession) / (1000 * 60 * 60 * 24));
-      
-      if (daysBetweenSessions === 1) {
+      if (sessionDate.getTime() === previousDate.getTime()) {
         currentStreak++;
+        currentDate = sessionDate;
       } else {
-        streakBroken = true;
         break;
       }
     }
 
-    // Update streak achievements based on current streak
-    const streakData = {
-      currentStreak,
-      twoDays: currentStreak >= 2,
-      threeDays: currentStreak >= 3,
-      fiveDays: currentStreak >= 5,
-      tenDays: currentStreak >= 10,
-      thirtyDays: currentStreak >= 30
+    // Return only the current streak value
+    return {
+      currentStreak
     };
-
-    // Update the user's streaks in the database
-    const userRef = ref(database, `users/${userId}`);
-    update(userRef, { streaks: streakData });
-
-    return streakData;
   };
+
+  // Function to update streaks based on existing sessions
+  const updateStreaksFromSessions = async () => {
+    try {
+      const userRef = ref(database, `users/${userId}`);
+      const userSnapshot = await get(userRef);
+      const userData = userSnapshot.val() || {};
+
+      if (!userData.focusSessions || userData.focusSessions.length === 0) {
+        console.log('No focus sessions found');
+        return;
+      }
+
+      // Calculate new streaks
+      const streakData = calculateStreaks(userData.focusSessions);
+
+      // Update only the streaks in the database
+      await update(userRef, { streaks: streakData });
+      
+      console.log('Streaks updated:', streakData);
+    } catch (error) {
+      console.error('Error updating streaks:', error);
+    }
+  };
+
+  // Add this to your useEffect to run when component mounts
+  useEffect(() => {
+    updateStreaksFromSessions();
+  }, []);
 
   const handleContinueButton = async () => {
     try {

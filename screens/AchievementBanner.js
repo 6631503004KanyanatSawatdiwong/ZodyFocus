@@ -7,13 +7,18 @@ const { width, height } = Dimensions.get('window'); // Get screen dimensions
 
 const AchievementBanner = () => {
     const [userStreaks, setUserStreaks] = useState({
-        currentStreak: 0,
-        twoDays: false,
-        threeDays: false,
-        fiveDays: false,
-        tenDays: false,
-        thirtyDays: false
+        currentStreak: 0
     });
+      
+    const currentStreak = userStreaks.currentStreak;
+
+    const streakBadgeUnlocks = {
+    twoDays: currentStreak >= 2,
+    threeDays: currentStreak >= 3,
+    fiveDays: currentStreak >= 5,
+    tenDays: currentStreak >= 10,
+    thirtyDays: currentStreak >= 30
+    };
 
     const [userData, setUserData] = useState({
         currentStar: 0,
@@ -194,7 +199,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.twoDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.twoDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: streakBadgeUnlocks.twoDays ? 1 : 0.3 }]}
                                 />
                                 <Text style={styles.badgeText}>2 Days</Text>
                             </View>
@@ -203,7 +208,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.threeDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.threeDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: streakBadgeUnlocks.threeDays ? 1 : 0.3 }]}
                                 />
                                 <Text style={styles.badgeText}>3 Days</Text>
                             </View>
@@ -214,7 +219,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.fiveDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.fiveDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: streakBadgeUnlocks.fiveDays ? 1 : 0.3 }]} 
                                 />
                                 <Text style={styles.badgeText}>5 Days</Text>
                             </View>
@@ -223,7 +228,7 @@ const AchievementBanner = () => {
                             <View style={styles.badgeItem}>
                                 <Image 
                                     source={streakBadges.tenDays} 
-                                    style={[styles.badgeImage, { opacity: userStreaks.tenDays ? 1 : 0.3 }]} 
+                                    style={[styles.badgeImage, { opacity: streakBadgeUnlocks.tenDays ? 1 : 0.3 }]} 
                                 />
                                 <Text style={styles.badgeText}>10 Days</Text>
                             </View>
