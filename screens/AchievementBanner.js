@@ -54,6 +54,16 @@ const AchievementBanner = () => {
                             currentStar: data.currentStar || 0,
                             focusSessions: data.focusSessions || []
                         });
+
+                        // Set planetBadges directly from database
+                        setPlanetBadges(data.planetBadges || {
+                            starletExplorer: true,
+                            lrisnovaVoyage: false,
+                            rosellePioneer: false,
+                            shimmerAdventurer: false,
+                            weekendWarrior: false,
+                            dreamWalker: false
+                        });
                     }
                 });
             } catch (error) {
