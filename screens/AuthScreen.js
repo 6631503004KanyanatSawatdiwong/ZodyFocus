@@ -64,11 +64,6 @@ const AuthScreen = ({ navigation }) => {
           focusSessions: [],
           streaks: {
             currentStreak: 0,
-            twoDays: false,
-            threeDays: false,
-            fiveDays: false,
-            tenDays: false,
-            thirtyDays: false
           },
           planetBadges: {
             heartExplorer: true,

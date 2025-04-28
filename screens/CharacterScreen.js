@@ -53,11 +53,6 @@ export default function CharacterScreen({ navigation }) {
                 },
                 streaks: {
                     currentStreak: 0,
-                    twoDays: false,
-                    threeDays: false,
-                    fiveDays: false,
-                    tenDays: false,
-                    thirtyDays: false
                 },
                 updatedAt: new Date().toISOString()
             });

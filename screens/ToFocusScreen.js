@@ -98,7 +98,7 @@ export default function ToFocusScreen({ route, navigation }) {
                                 };
                                 updateData.planetBadges = {
                                     ...(userData.planetBadges || {}),
-                                    lrisnovaVoyage: true
+                                    rosellePioneer: true
                                 };
                             } else if (userData.currentStar === 12) {
                                 updateData.unlockedAliens = {
@@ -107,7 +107,7 @@ export default function ToFocusScreen({ route, navigation }) {
                                 };
                                 updateData.planetBadges = {
                                     ...(userData.planetBadges || {}),
-                                    rosellePioneer: true
+                                    shimmerAdventurer: true
                                 };
                             } else if (userData.currentStar === 17) {
                                 updateData.unlockedAliens = {

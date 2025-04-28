@@ -19,10 +19,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/ZodyFocus-Logo.jpeg",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.TheThinkTank.ZodyFocus"
     },
     "web": {
       "favicon": "./assets/ZodyFocus-Logo.jpeg"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4311a42a-9c5f-4bda-a9ee-f45d4def3311"
+      }
     }
   }
 }

@@ -50,56 +50,46 @@ export default function SummaryFocusScreen({ route, navigation }) {
 
   // Calculate streaks based on focus sessions
   const calculateStreaks = (focusSessions) => {
-    // Base case: no sessions = no streak
     if (!focusSessions || focusSessions.length === 0) {
-      return {
-        currentStreak: 0
-      };
+      return { currentStreak: 0 };
     }
 
-    // Sort sessions by date (newest first)
-    const sortedSessions = [...focusSessions].sort((a, b) => 
-      new Date(b.createdAt) - new Date(a.createdAt)
-    );
-
-    // Get current time in Thailand (UTC+7)
-    const now = new Date(Date.now() + (7 * 60 * 60 * 1000));
-    const todayMidnight = new Date(now);
-    todayMidnight.setHours(0, 0, 0, 0);
+    // Get today's date string (Thailand time)
+    const now = new Date();
+    const todayString = now.toISOString().split('T')[0];
     
-    // Check if most recent session was today
-    const mostRecentSession = new Date(sortedSessions[0].createdAt);
-    if (mostRecentSession < todayMidnight) {
-      return {
-        currentStreak: 0
-      };
-    }
-
-    // Calculate current streak
-    let currentStreak = 1;
-    let currentDate = new Date(mostRecentSession);
-    currentDate.setHours(0, 0, 0, 0);
+    let currentStreak = 0;
+    let currentDate = new Date(todayString);
+    let expectedDate = currentDate;
     
-    for (let i = 1; i < sortedSessions.length; i++) {
-      const sessionDate = new Date(sortedSessions[i].createdAt);
-      sessionDate.setHours(0, 0, 0, 0);
+    // Since sessions are ordered with newest first, we can iterate directly
+    for (let i = 0; i < focusSessions.length; i++) {
+      const sessionDate = new Date(focusSessions[i].createdAt);
+      const sessionDateString = sessionDate.toISOString().split('T')[0];
       
-      // Check if this session is from the previous day
-      const previousDate = new Date(currentDate);
-      previousDate.setDate(previousDate.getDate() - 1);
+      // If this is the first session we're checking
+      if (i === 0) {
+        // If it's from today, start the streak
+        if (sessionDateString === todayString) {
+          currentStreak = 1;
+        }
+        expectedDate.setDate(expectedDate.getDate() - 1);
+        continue;
+      }
       
-      if (sessionDate.getTime() === previousDate.getTime()) {
+      // For subsequent sessions, check if they're on the expected previous day
+      const expectedDateString = expectedDate.toISOString().split('T')[0];
+      
+      if (sessionDateString === expectedDateString) {
         currentStreak++;
-        currentDate = sessionDate;
+        expectedDate.setDate(expectedDate.getDate() - 1);
       } else {
+        // Break the streak if we miss a day
         break;
       }
     }
 
-    // Return only the current streak value
-    return {
-      currentStreak
-    };
+    return { currentStreak };
   };
 
   // Function to update streaks based on existing sessions
@@ -139,37 +129,39 @@ export default function SummaryFocusScreen({ route, navigation }) {
 
       const formattedDuration = formatDuration(actualDuration);
 
-      // Convert timestamps to Thailand time
-      const startTimeThailand = new Date(startTime + (7 * 60 * 60 * 1000));
-      const completedTimeThailand = new Date(Date.now() + (7 * 60 * 60 * 1000));
+      // Add Thailand time offset (UTC+7)
+      const thailandOffset = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
+      const now = new Date();
+      const nowThailand = new Date(now.getTime() + thailandOffset);
 
+      // Create session data with Thailand time
       const sessionData = {
         focusName,
         duration: formattedDuration,
-        createdAt: startTimeThailand.toISOString(),
-        completedAt: completedTimeThailand.toISOString()
+        createdAt: nowThailand.toISOString(),
+        completedAt: nowThailand.toISOString()
       };
 
+      // Get existing focus sessions or initialize empty array
       const focusSessions = userData.focusSessions || [];
-      focusSessions.push(sessionData);
+      
+      // Add new session to the beginning of the array
+      focusSessions.unshift(sessionData);
 
       const selectedTimeInSeconds = selectedTime * 60;
       const isFullSession = actualDuration >= selectedTimeInSeconds;
 
       const currentStar = isFullSession ? ((userData.currentStar || 0) + 1) : (userData.currentStar || 0);
 
-      // Calculate streaks
+      // Calculate streaks with the updated focus sessions
       const streakData = calculateStreaks(focusSessions);
 
-      // Update user data with focusSessions, currentStar, and streaks
-      const updateData = {
-        ...userData,
+      // Update only the necessary fields in the database
+      await update(userRef, {
         focusSessions,
         currentStar,
         streaks: streakData
-      };
-
-      await set(userRef, updateData);
+      });
 
       navigation.navigate('ToFocusScreen');
     } catch (error) {
