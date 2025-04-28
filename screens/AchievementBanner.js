@@ -19,7 +19,7 @@ const AchievementBanner = () => {
 
     const [planetBadges, setPlanetBadges] = useState({
         starletExplorer: true, // Always unlocked
-        lrisnovaVoyage: false,
+        irisnovaVoyage: false,
         rosellePioneer: false,
         shimmerAdventurer: false,
         weekendWarrior: false,
@@ -28,43 +28,34 @@ const AchievementBanner = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            try {
-                const userId = await AsyncStorage.getItem('userId');
-                if (!userId) return;
-
-                const userRef = ref(database, `users/${userId}`);
-                onValue(userRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        // Update streaks data with flattened structure
-                        setUserStreaks(data.streaks || {
-                            currentStreak: 0
-                        });
-
-                        // Update user data
-                        setUserData({
-                            currentStar: data.currentStar || 0,
-                            focusSessions: data.focusSessions || []
-                        });
-
-                        // Set planetBadges directly from database
-                        setPlanetBadges(data.planetBadges || {
-                            starletExplorer: true,
-                            lrisnovaVoyage: false,
-                            rosellePioneer: false,
-                            shimmerAdventurer: false,
-                            weekendWarrior: false,
-                            dreamWalker: false
-                        });
-                    }
-                });
-            } catch (error) {
-                console.error('Error fetching user data:', error);
+          const userId = await AsyncStorage.getItem('userId');
+          if (!userId) return;
+      
+          const userRef = ref(database, `users/${userId}`);
+          const unsubscribe = onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+              setUserStreaks(data.streaks || { currentStreak: 0 });
+              setUserData({
+                currentStar: data.currentStar || 0,
+                focusSessions: data.focusSessions || []
+              });
+              setPlanetBadges(data.planetBadges || {
+                starletExplorer: true,
+                irisnovaVoyage: false,
+                rosellePioneer: false,
+                shimmerAdventurer: false,
+                weekendWarrior: false,
+                dreamWalker: false
+              });
             }
+          });
+      
+          return () => unsubscribe(); // <== cleanup
         };
-
+      
         fetchUserData();
-    }, []);
+      }, []);      
 
     // Streak badge images
     const streakBadges = {
@@ -78,7 +69,7 @@ const AchievementBanner = () => {
     // Planet badge images
     const planetBadgeImages = {
         starletExplorer: require('../assets/planetBadges/Starlet_Explorer.png'),
-        lrisnovaVoyage: require('../assets/planetBadges/Lrisnova_Voyage.png'),
+        irisnovaVoyage: require('../assets/planetBadges/irisnova_Voyage.png'),
         rosellePioneer: require('../assets/planetBadges/Roselle_Pioneer.png'),
         shimmerAdventurer: require('../assets/planetBadges/Shimmer_Adventurer.png'),
         weekendWarrior: require('../assets/planetBadges/Weekend_warrior.png'),
@@ -134,10 +125,10 @@ const AchievementBanner = () => {
                             {/* Feline Voyage */}
                             <View style={styles.badgeItem}>
                                 <Image 
-                                    source={planetBadgeImages.lrisnovaVoyage} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.lrisnovaVoyage ? 1 : 0.3 }]} 
+                                    source={planetBadgeImages.irisnovaVoyage} 
+                                    style={[styles.badgeImage, { opacity: planetBadges.irisnovaVoyage ? 1 : 0.3 }]} 
                                 />
-                                <Text style={styles.badgeText}>Lrisnova Voyage</Text>
+                                <Text style={styles.badgeText}>Irisnova Voyage</Text>
                             </View>
 
                             {/* Dream Walker */}

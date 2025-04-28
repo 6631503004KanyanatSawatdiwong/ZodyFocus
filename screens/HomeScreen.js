@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
             return require('../assets/planets/third-planet.png');
         } else if (planetBadges.rosellePioneer) {
             return require('../assets/planets/second-planet.png');
-        } else if (planetBadges.lrisnovaVoyage) {
+        } else if (planetBadges.irisnovaVoyage) {
             return require('../assets/planets/fourth-planet.png');
         } else {
             return require('../assets/planets/start-planet.png');

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     View, Image, StyleSheet, ImageBackground,
     Text, TouchableOpacity, TextInput, ScrollView, 
-    Alert, Dimensions
+    Alert, Dimensions, ActivityIndicator
 } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChartLine, faTrophy, faXmark, faGear } from '@fortawesome/free-solid-svg-icons';
@@ -100,7 +100,24 @@ export default function ProfileScreen({ navigation }) {
 
     if (!userData) return null;
 
-    const characterImage = characters[userData.character]?.image || characters[0].image;
+    const characterImage = (() => {
+        if (!userData?.character || isNaN(userData.character) || userData.character >= characters.length) {
+          return characters[0].image;
+        }
+        return characters[userData.character].image;
+    })();
+      
+      // Replace
+    if (!userData) return null;
+      
+      // With
+    if (!userData) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        );
+    }
 
     return (
         <ImageBackground source={require('../assets/background/space-background.png')} style={styles.background}>

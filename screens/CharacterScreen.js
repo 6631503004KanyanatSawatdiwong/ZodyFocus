@@ -38,23 +38,8 @@ export default function CharacterScreen({ navigation }) {
             const userRef = ref(database, `users/${currentUser.uid}`);
             await set(userRef, {
                 character: selectedCharacter,
-                createdAt: new Date().toISOString(),
-                currentStar: 0,
                 email: currentUser.email,
-                lastUnlockStar: 0,
                 name: userName.trim(),
-                planetBadges: {
-                    starletExplorer: true, // Always unlocked
-                    lrisnovaVoyage: false,
-                    rosellePioneer: false,
-                    shimmerAdventurer: false,
-                    weekendWarrior: false,
-                    dreamWalker: false
-                },
-                streaks: {
-                    currentStreak: 0,
-                },
-                updatedAt: new Date().toISOString()
             });
 
             // Save user ID to AsyncStorage

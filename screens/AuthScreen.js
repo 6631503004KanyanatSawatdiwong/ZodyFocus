@@ -66,13 +66,13 @@ const AuthScreen = ({ navigation }) => {
             currentStreak: 0,
           },
           planetBadges: {
-            heartExplorer: true,
-            felineVoyage: false,
-            goldenPioneer: false,
-            bubblegumConqueror: false,
-            weekendWarrior: false,
+            starletExplorer: true, // Always unlocked
+            irisnovaVoyage: false,
+            rosellePioneer: false,
+            shimmerAdventurer: false,          
+            weekendWarrior: false,          
             dreamWalker: false
-          }
+          },                  
         });
 
         Alert.alert("Success", "Account created successfully");

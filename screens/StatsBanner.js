@@ -7,9 +7,10 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CHART_HEIGHT = 200;
-const Y_AXIS_LABELS = ['60', '40', '20', '0'];
 
 const CustomBarChart = ({ data, labels, maxValue = 90, isMonthView, activeButton }) => {
+    const Y_AXIS_LABELS = [maxValue, maxValue * 2/3, maxValue / 3, 0].map(val => Math.round(val).toString());
+
     return (
         <View style={styles.chartContainer}>
             {/* Y-axis labels */}
