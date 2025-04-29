@@ -91,7 +91,7 @@ export default function IntroScreen({ navigation }) {
                     </Animated.View>
                     {/* Title and Logo */}
                     <View style={styles.titleContainer}>
-                        <Image source={require('../assets/ZodyFocus-Logo.jpg')} style={styles.logoImage} />
+                        <Image source={require('../assets/ZodyFocus-Logo.png')} style={styles.logoImage} />
                         <View style={styles.textContainer}>
                             <Text style={styles.title}>Zody</Text>
                             <Text style={styles.title}>Focus</Text>
