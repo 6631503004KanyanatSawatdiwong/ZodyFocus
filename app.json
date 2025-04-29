@@ -21,14 +21,14 @@
         "foregroundImage": "./assets/ZodyFocus-Logo.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.carmenk.ZodyFocus"
+      "package": "com.TheThinkTank.ZodyFocus"
     },
     "web": {
       "favicon": "./assets/ZodyFocus-Logo.png"
     },
     "extra": {
       "eas": {
-        "projectId": "4311a42a-9c5f-4bda-a9ee-f45d4def3311"
+        "projectId": "5f8a57bd-e6c5-4267-afc2-6d6d457e387d"
       }
     }
   }
