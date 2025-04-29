@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, StyleSheet, ImageBackground, Text, TouchableOpacity, Animated, Easing, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, ImageBackground, Text, TouchableOpacity, Animated, Easing, Dimensions, ActivityIndicator } from 'react-native';
 import { database, ref, onValue } from '../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,8 +12,12 @@ const characters = [
 
 const HomeScreen = ({ navigation }) => {
     const [userData, setUserData] = useState(null);
+    const [isPlanetLoaded, setIsPlanetLoaded] = useState(false);
+    const [isFocusButtonLoaded, setIsFocusButtonLoaded] = useState(false);
     const floatAnim = useRef(new Animated.Value(0)).current;
     const starRotationAnim = useRef(new Animated.Value(0)).current;
+    const planetOpacity = useRef(new Animated.Value(0)).current;
+    const focusButtonOpacity = useRef(new Animated.Value(0)).current;
 
     // Function to determine which planet to show based on planetBadges
     const getPlanetImage = (planetBadges) => {
@@ -26,6 +30,24 @@ const HomeScreen = ({ navigation }) => {
         } else {
             return require('../assets/planets/start-planet.png');
         }
+    };
+
+    const fadeInImage = (animValue) => {
+        Animated.timing(animValue, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const handlePlanetLoad = () => {
+        setIsPlanetLoaded(true);
+        fadeInImage(planetOpacity);
+    };
+
+    const handleFocusButtonLoad = () => {
+        setIsFocusButtonLoaded(true);
+        fadeInImage(focusButtonOpacity);
     };
 
     useEffect(() => {
@@ -107,12 +129,23 @@ const HomeScreen = ({ navigation }) => {
                     style={styles.bigStarContainer} 
                     onPress={() => navigation.navigate('ToFocusScreen')}
                 >
-                    <Image source={require('../assets/images/focus-button.png')} style={styles.bigStar} />
+                    {!isFocusButtonLoaded && (
+                        <ActivityIndicator size="large" color="#FFFFFF" style={styles.loadingIndicator} />
+                    )}
+                    <Animated.Image 
+                        source={require('../assets/images/focus-button.png')} 
+                        style={[styles.bigStar, { opacity: focusButtonOpacity }]}
+                        onLoad={handleFocusButtonLoad}
+                    />
                 </TouchableOpacity>
 
-                <Image 
+                {!isPlanetLoaded && (
+                    <ActivityIndicator size="large" color="#FFFFFF" style={styles.planetLoadingIndicator} />
+                )}
+                <Animated.Image 
                     source={getPlanetImage(userData.planetBadges || {})} 
-                    style={styles.moonImage} 
+                    style={[styles.moonImage, { opacity: planetOpacity }]}
+                    onLoad={handlePlanetLoad}
                 />
                 <Animated.View style={{ transform: [{ translateY: floatAnim }] }}>
                     <Image source={characterImage} style={styles.characterImage} />
@@ -221,6 +254,15 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
     },
          
+    loadingIndicator: {
+        position: 'absolute',
+        alignSelf: 'center',
+    },
+    planetLoadingIndicator: {
+        position: 'absolute',
+        alignSelf: 'center',
+        bottom: height * 0.3,
+    },
 });
 
 export default HomeScreen; 

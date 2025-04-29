@@ -4,8 +4,8 @@ import 'react-native-gesture-handler';
 import React  from 'react';
 import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { createStackNavigator } from '@react-navigation/stack';
+import { enableScreens } from 'react-native-screens';
 import { useFonts } from 'expo-font';
 import IntroScreen from './screens/IntroScreen';
 import CharacterScreen from './screens/CharacterScreen';
@@ -23,9 +23,13 @@ import AuthScreen from './screens/AuthScreen';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/firebaseConfig';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
+// Enable native screens
+enableScreens();
 
 const Stack = createStackNavigator();
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,11 +46,26 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar 
+        barStyle="light-content" 
+        backgroundColor="transparent" 
+        translucent={true}
+      />
       <NavigationContainer>
-        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-        <Stack.Navigator initialRouteName="IntroScreen" screenOptions={{ headerShown: false}}>
+        <Stack.Navigator 
+          initialRouteName="IntroScreen" 
+          screenOptions={{ 
+            headerShown: false,
+            cardStyle: { backgroundColor: 'transparent' },
+            cardStyleInterpolator: ({ current: { progress } }) => ({
+              cardStyle: {
+                opacity: progress
+              }
+            })
+          }}
+        >
           <Stack.Screen name="IntroScreen" component={IntroScreen} />
-          <Stack.Screen name = "AuthScreen" component={AuthScreen} />
+          <Stack.Screen name="AuthScreen" component={AuthScreen} />
           <Stack.Screen name="CharacterScreen" component={CharacterScreen} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />

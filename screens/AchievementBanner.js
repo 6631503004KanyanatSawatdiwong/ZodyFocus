@@ -1,11 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, ActivityIndicator } from 'react-native';
 import { database, ref, onValue, update } from '../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window'); // Get screen dimensions
 
+// Move image requires outside component to ensure they're cached
+const planetBadgeImages = {
+    starletExplorer: require('../assets/planetBadges/Starlet_Explorer.png'),
+    irisnovaVoyage: require('../assets/planetBadges/irisnova_Voyage.png'),
+    rosellePioneer: require('../assets/planetBadges/Roselle_Pioneer.png'),
+    shimmerAdventurer: require('../assets/planetBadges/Shimmer_Adventurer.png'),
+    weekendWarrior: require('../assets/planetBadges/Weekend_warrior.png'),
+    dreamWalker: require('../assets/planetBadges/Dreamwalker.png')
+};
+
+const streakBadges = {
+    twoDays: require('../assets/streakBadges/2Days.png'),
+    threeDays: require('../assets/streakBadges/3Days.png'),
+    fiveDays: require('../assets/streakBadges/5Days.png'),
+    tenDays: require('../assets/streakBadges/10Days.png'),
+    thirtyDays: require('../assets/streakBadges/30days.png'),
+    currentStreak: require('../assets/streakBadges/currentStreak.png')
+};
+
 const AchievementBanner = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadedImages, setLoadedImages] = useState({});
     const [userStreaks, setUserStreaks] = useState({
         currentStreak: 0
     });
@@ -25,6 +46,36 @@ const AchievementBanner = () => {
         weekendWarrior: false,
         dreamWalker: false
     });
+
+    const onImageLoad = (imageName) => {
+        setLoadedImages(prev => ({
+            ...prev,
+            [imageName]: true
+        }));
+    };
+
+    const renderBadgeImage = (source, opacity = 1, imageName) => {
+        return (
+            <View style={[styles.badgeImageContainer, { opacity }]}>
+                {!loadedImages[imageName] && (
+                    <ActivityIndicator 
+                        size="small" 
+                        color="#ffffff" 
+                        style={styles.loadingIndicator} 
+                    />
+                )}
+                <Image 
+                    source={source} 
+                    style={[
+                        styles.badgeImage,
+                        !loadedImages[imageName] && styles.hiddenImage
+                    ]}
+                    onLoad={() => onImageLoad(imageName)}
+                    fadeDuration={0}
+                />
+            </View>
+        );
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -57,25 +108,6 @@ const AchievementBanner = () => {
         fetchUserData();
       }, []);      
 
-    // Streak badge images
-    const streakBadges = {
-        twoDays: require('../assets/streakBadges/2Days.png'),
-        threeDays: require('../assets/streakBadges/3Days.png'),
-        fiveDays: require('../assets/streakBadges/5Days.png'),
-        tenDays: require('../assets/streakBadges/10Days.png'),
-        thirtyDays: require('../assets/streakBadges/30days.png')
-    };
-
-    // Planet badge images
-    const planetBadgeImages = {
-        starletExplorer: require('../assets/planetBadges/Starlet_Explorer.png'),
-        irisnovaVoyage: require('../assets/planetBadges/irisnova_Voyage.png'),
-        rosellePioneer: require('../assets/planetBadges/Roselle_Pioneer.png'),
-        shimmerAdventurer: require('../assets/planetBadges/Shimmer_Adventurer.png'),
-        weekendWarrior: require('../assets/planetBadges/Weekend_warrior.png'),
-        dreamWalker: require('../assets/planetBadges/Dreamwalker.png')
-    };
-
     return (
         <View style={styles.banner}>
             {/* <ScrollView 
@@ -95,28 +127,31 @@ const AchievementBanner = () => {
                         <View style={styles.badgeRow}>
                             {/* Heart Explorer */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={planetBadgeImages.starletExplorer} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.starletExplorer ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    planetBadgeImages.starletExplorer, 
+                                    planetBadges.starletExplorer ? 1 : 0.3,
+                                    'starletExplorer'
+                                )}
                                 <Text style={styles.badgeText}>Starlet Explorer</Text>
                             </View>
 
                             {/* Golden Pioneer */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={planetBadgeImages.rosellePioneer} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.rosellePioneer ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    planetBadgeImages.rosellePioneer,
+                                    planetBadges.rosellePioneer ? 1 : 0.3,
+                                    'rosellePioneer'
+                                )}
                                 <Text style={styles.badgeText}>Roselle Pioneer</Text>
                             </View>
                             
                             {/* Bubblegum Conqueror */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={planetBadgeImages.shimmerAdventurer} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.shimmerAdventurer ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    planetBadgeImages.shimmerAdventurer,
+                                    planetBadges.shimmerAdventurer ? 1 : 0.3,
+                                    'shimmerAdventurer'
+                                )}
                                 <Text style={styles.badgeText}>Shimmer Adventurer</Text>
                             </View>
                         </View>
@@ -124,28 +159,31 @@ const AchievementBanner = () => {
                         <View style={styles.badgeRow}>
                             {/* Feline Voyage */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={planetBadgeImages.irisnovaVoyage} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.irisnovaVoyage ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    planetBadgeImages.irisnovaVoyage,
+                                    planetBadges.irisnovaVoyage ? 1 : 0.3,
+                                    'irisnovaVoyage'
+                                )}
                                 <Text style={styles.badgeText}>Irisnova Voyage</Text>
                             </View>
 
                             {/* Dream Walker */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={planetBadgeImages.dreamWalker} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.dreamWalker ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    planetBadgeImages.dreamWalker,
+                                    planetBadges.dreamWalker ? 1 : 0.3,
+                                    'dreamWalker'
+                                )}
                                 <Text style={styles.badgeText}>Dream Walker</Text>
                             </View>
                             
                             {/* Weekend Warrior */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={planetBadgeImages.weekendWarrior} 
-                                    style={[styles.badgeImage, { opacity: planetBadges.weekendWarrior ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    planetBadgeImages.weekendWarrior,
+                                    planetBadges.weekendWarrior ? 1 : 0.3,
+                                    'weekendWarrior'
+                                )}
                                 <Text style={styles.badgeText}>Weekend Warrior</Text>
                             </View>
                         </View>
@@ -165,7 +203,11 @@ const AchievementBanner = () => {
                             {/* Current Streak Display */}
                             <View style={styles.badgeItem}>
                                 <View style={styles.currentStreakContainer}>
-                                    <Image source={require('../assets/streakBadges/currentStreak.png')} style={styles.badgeImage} />
+                                    {renderBadgeImage(
+                                        streakBadges.currentStreak,
+                                        1,
+                                        'currentStreak'
+                                    )}
                                     <View style={styles.streakNumberContainer}>
                                         <Text style={styles.currentStreakText}>{userStreaks.currentStreak}</Text>
                                     </View>
@@ -175,19 +217,21 @@ const AchievementBanner = () => {
 
                             {/* 2 Days Streak */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={streakBadges.twoDays} 
-                                    style={[styles.badgeImage, { opacity: currentStreak >= 2 ? 1 : 0.3 }]}
-                                />
+                                {renderBadgeImage(
+                                    streakBadges.twoDays,
+                                    currentStreak >= 2 ? 1 : 0.3,
+                                    'twoDays'
+                                )}
                                 <Text style={styles.badgeText}>2 Days</Text>
                             </View>
                             
                             {/* 3 Days Streak */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={streakBadges.threeDays} 
-                                    style={[styles.badgeImage, { opacity: currentStreak >= 3 ? 1 : 0.3 }]}
-                                />
+                                {renderBadgeImage(
+                                    streakBadges.threeDays,
+                                    currentStreak >= 3 ? 1 : 0.3,
+                                    'threeDays'
+                                )}
                                 <Text style={styles.badgeText}>3 Days</Text>
                             </View>
                         </View>
@@ -195,28 +239,31 @@ const AchievementBanner = () => {
                         <View style={styles.badgeRow}>
                             {/* 5 Days Streak */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={streakBadges.fiveDays} 
-                                    style={[styles.badgeImage, { opacity: currentStreak >= 5 ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    streakBadges.fiveDays,
+                                    currentStreak >= 5 ? 1 : 0.3,
+                                    'fiveDays'
+                                )}
                                 <Text style={styles.badgeText}>5 Days</Text>
                             </View>
 
                             {/* 10 Days Streak */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={streakBadges.tenDays} 
-                                    style={[styles.badgeImage, { opacity: currentStreak >= 10 ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    streakBadges.tenDays,
+                                    currentStreak >= 10 ? 1 : 0.3,
+                                    'tenDays'
+                                )}
                                 <Text style={styles.badgeText}>10 Days</Text>
                             </View>
                             
                             {/* 30 Days Streak */}
                             <View style={styles.badgeItem}>
-                                <Image 
-                                    source={streakBadges.thirtyDays} 
-                                    style={[styles.badgeImage, { opacity: currentStreak >= 30 ? 1 : 0.3 }]} 
-                                />
+                                {renderBadgeImage(
+                                    streakBadges.thirtyDays,
+                                    currentStreak >= 30 ? 1 : 0.3,
+                                    'thirtyDays'
+                                )}
                                 <Text style={styles.badgeText}>30 Days</Text>
                             </View>
                         </View>
@@ -282,6 +329,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: width * 0.25,
         height: width * 0.25,
+    },
+    badgeImageContainer: {
+        width: width * 0.25,
+        height: width * 0.25,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingIndicator: {
+        position: 'absolute',
+        zIndex: 1,
+    },
+    hiddenImage: {
+        opacity: 0,
     },
     badgeImage: {
         width: width * 0.25,

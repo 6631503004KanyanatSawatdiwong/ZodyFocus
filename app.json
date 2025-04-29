@@ -4,26 +4,27 @@
     "slug": "ZodyFocus",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/ZodyFocus-Logo.jpeg",
+    "icon": "./assets/ZodyFocus-Logo.jpg",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/ZodyFocus-Logo.jpeg",
+      "image": "./assets/ZodyFocus-Logo.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.TheThinkTank.ZodyFocus"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/ZodyFocus-Logo.jpeg",
+        "foregroundImage": "./assets/ZodyFocus-Logo.jpg",
         "backgroundColor": "#ffffff"
       },
       "package": "com.TheThinkTank.ZodyFocus"
     },
     "web": {
-      "favicon": "./assets/ZodyFocus-Logo.jpeg"
+      "favicon": "./assets/ZodyFocus-Logo.jpg"
     },
     "extra": {
       "eas": {
