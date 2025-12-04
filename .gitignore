@@ -30,10 +30,14 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
+
+# Firebase & Google Services files (contains sensitive keys)
+**/google-services.json
+**/GoogleService-Info.plist
+**/*firebase*.json
+zodyfocus-*.json
 
 # typescript
 *.tsbuildinfo
-node_modules/
-.env
-*.jsonzodyfocus-2052bcc199a2.json
